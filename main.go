@@ -98,5 +98,5 @@ func main() {
 }
 
 func logf(format string, a ...interface{}) {
-	_, _ = fmt.Fprintf(os.Stderr, format, a)
+	_, _ = fmt.Fprintf(os.Stderr, format, a...)
 }
