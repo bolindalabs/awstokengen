@@ -15,7 +15,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-var Version = "dev"
+// set by goreleaser during build
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
 
 var (
 	region    = flag.String("region", endpoints.UsEast1RegionID, "AWS Region to make requests to")
@@ -32,7 +37,7 @@ const (
 )
 
 func mainErr() error {
-	logf("tokengen version: %s\n", Version)
+	logf("tokengen version: %s, commit: %s, date: %s\n", version, commit, date)
 
 	roleArn := os.Getenv(AwsRoleArn)
 	if roleArn == "" {
