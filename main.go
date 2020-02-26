@@ -37,7 +37,7 @@ const (
 )
 
 func mainErr() error {
-	logf("tokengen version: %s, commit: %s, date: %s\n", version, commit, date)
+	logf("awstokengen version: %s, commit: %s, date: %s\n", version, commit, date)
 
 	roleArn := os.Getenv(AwsRoleArn)
 	if roleArn == "" {
