@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/endpoints"
 	"github.com/aws/aws-sdk-go-v2/aws/external"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/google/uuid"
@@ -23,7 +22,7 @@ var (
 )
 
 var (
-	region    = flag.String("region", endpoints.UsEast1RegionID, "AWS Region to make requests to")
+	region    = flag.String("region", "us-east-1", "AWS Region to make requests to")
 	exitNoEks = flag.Bool("exitNoEks", false, "if IAM Role for Service Accounts environment variables are not detected, exit without error")
 )
 
