@@ -95,7 +95,7 @@ func main() {
 	err := mainErr()
 	if errors.Is(err, errInvalidEnv) && *exitNoEks {
 		logf("not running on EKS, exiting\n")
-	} else {
+	} else if err != nil {
 		logf("%#v\n", err)
 		os.Exit(1)
 	}
