@@ -15,3 +15,4 @@ eval $(awstokengen)
 Available CLI flags:
 - `-exitNoEks (default=false)` if _IAM Role for Service Accounts_ environment variables are not detected, exit without error
 - `-region (default=us-east-1)` AWS Region to make requests to
+- `-sessionName (default=new UUID())` if set will be used as role session name. Session Arn will be in format arn:aws:sts::<AccountNumber>:assumed-role/$AWS_ROLE_ARN/<sessionName>
