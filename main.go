@@ -69,10 +69,10 @@ func mainErr() error {
 	var sessName string
 	if sessNameEnv := os.Getenv(AwsSessionName); sessNameEnv != "" {
 		sessName = sessNameEnv
-	} else if *sessionName == "" {
-		sessName = uuid.New().String()
-	} else {
+	} else if *sessionName != "" {
 		sessName = *sessionName
+	} else {
+		sessName = uuid.New().String()
 	}
 
 	in := &sts.AssumeRoleWithWebIdentityInput{
