@@ -22,8 +22,9 @@ var (
 )
 
 var (
-	region    = flag.String("region", "us-east-1", "AWS Region to make requests to")
-	exitNoEks = flag.Bool("exitNoEks", false, "if IAM Role for Service Accounts environment variables are not detected, exit without error")
+	region      = flag.String("region", "us-east-1", "AWS Region to make requests to")
+	exitNoEks   = flag.Bool("exitNoEks", false, "if IAM Roles for Service Accounts environment variables are not detected, exit without error")
+	sessionName = flag.String("sessionName", "", "if set will be used as role session name. Session Arn will be in format arn:aws:sts::<AccountNumber>:assumed-role/$AWS_ROLE_ARN/<sessionName>")
 )
 
 var (
@@ -31,8 +32,12 @@ var (
 )
 
 const (
+	// always provided by a Pod running inside EKS with IAM Roles for Service Accounts enabled.
 	AwsRoleArn              = "AWS_ROLE_ARN"
 	AwsWebIdentityTokenFile = "AWS_WEB_IDENTITY_TOKEN_FILE"
+
+	// can overwrite -sessionName flag.
+	AwsSessionName = "AWS_SESSION_NAME"
 )
 
 func mainErr() error {
@@ -61,9 +66,18 @@ func mainErr() error {
 		return errors.Wrap(err, "could not read web-identity-token from file")
 	}
 
+	var sessName string
+	if sessNameEnv := os.Getenv(AwsSessionName); sessNameEnv != "" {
+		sessName = sessNameEnv
+	} else if *sessionName != "" {
+		sessName = *sessionName
+	} else {
+		sessName = uuid.New().String()
+	}
+
 	in := &sts.AssumeRoleWithWebIdentityInput{
 		RoleArn:          aws.String(roleArn),
-		RoleSessionName:  aws.String(uuid.New().String()),
+		RoleSessionName:  aws.String(sessName),
 		WebIdentityToken: aws.String(string(bts)),
 	}
 	req := newSts.AssumeRoleWithWebIdentityRequest(in)
