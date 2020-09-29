@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/external"
+	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
@@ -53,13 +53,13 @@ func mainErr() error {
 		return errors.Wrapf(errInvalidEnv, "%s must be set", AwsWebIdentityTokenFile)
 	}
 
-	cfg, err := external.LoadDefaultAWSConfig()
+	cfg, err := config.LoadDefaultConfig()
 	if err != nil {
 		return errors.Wrap(err, "unable to load SDK config")
 	}
 	cfg.Region = *region
 
-	newSts := sts.New(cfg)
+	newSts := sts.NewFromConfig(cfg)
 
 	bts, err := ioutil.ReadFile(webIdentityTokenFile)
 	if err != nil {
@@ -80,9 +80,7 @@ func mainErr() error {
 		RoleSessionName:  aws.String(sessName),
 		WebIdentityToken: aws.String(string(bts)),
 	}
-	req := newSts.AssumeRoleWithWebIdentityRequest(in)
-
-	res, err := req.Send(context.Background())
+	res, err := newSts.AssumeRoleWithWebIdentity(context.Background(), in)
 	if err != nil {
 		return err
 	}
