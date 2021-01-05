@@ -53,7 +53,7 @@ func mainErr() error {
 		return errors.Wrapf(errInvalidEnv, "%s must be set", AwsWebIdentityTokenFile)
 	}
 
-	cfg, err := config.LoadDefaultConfig()
+	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
 		return errors.Wrap(err, "unable to load SDK config")
 	}
