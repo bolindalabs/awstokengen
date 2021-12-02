@@ -1,4 +1,4 @@
-FROM golang:1.16 AS build-env
+FROM golang:1.17 AS build-env
 
 # Add namespace here to resolve /vendor dependencies
 ENV NAMESPACE github.com/bolindalabs/awstokengen
