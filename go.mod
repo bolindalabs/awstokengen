@@ -3,7 +3,7 @@ module github.com/bolindalabs/awstokengen
 go 1.17
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.17.5
+	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.5
 	github.com/google/uuid v1.3.0
